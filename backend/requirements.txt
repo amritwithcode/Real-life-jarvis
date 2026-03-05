@@ -1,0 +1,12 @@
+fastapi>=0.100.0
+fastapi
+uvicorn[standard]
+openai
+pydantic
+psutil
+websockets
+aiosqlite
+pygetwindow
+pyautogui
+requests
+playwright

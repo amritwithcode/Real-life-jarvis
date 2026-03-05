@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JARVIS AI — Personal AI Assistant</title>
+    <meta
+      name="description"
+      content="JARVIS AI - Your intelligent Hinglish personal AI assistant with memory, emotion detection, and system automation."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!-- ─── Onboarding Modal ─────────────────────────────── -->
+    <div class="onboarding-overlay" id="onboardingOverlay">
+      <div class="onboarding-modal">
+        <div class="onboarding-glow"></div>
+        <div class="jarvis-logo">
+          <div class="logo-ring"></div>
+          <div class="logo-core">J</div>
+        </div>
+        <h1>Welcome to <span class="gradient-text">JARVIS AI</span></h1>
+        <p class="subtitle">Your intelligent personal AI companion</p>
+
+        <div class="onboarding-steps">
+          <!-- Step 1 -->
+          <div class="onboarding-step active" id="step1">
+            <h3>👋 What should I call you?</h3>
+            <input
+              type="text"
+              id="userName"
+              class="jarvis-input"
+              placeholder="Enter your name..."
+              autocomplete="off"
+            />
+          </div>
+          <!-- Step 2 -->
+          <div class="onboarding-step" id="step2">
+            <h3>🌐 Language Preference</h3>
+            <div class="option-grid">
+              <button class="option-btn selected" data-lang="hinglish">
+                🇮🇳 Hinglish
+              </button>
+              <button class="option-btn" data-lang="english">🇬🇧 English</button>
+              <button class="option-btn" data-lang="hindi">🇮🇳 Hindi</button>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div class="onboarding-step" id="step3">
+            <h3>⚡ Ready to go!</h3>
+            <p>
+              JARVIS will remember everything you tell it, detect your emotions,
+              and assist you in natural Hinglish.
+            </p>
+            <div class="feature-list">
+              <div class="feature-item">🧠 Persistent Memory</div>
+              <div class="feature-item">💬 Hinglish Conversation</div>
+              <div class="feature-item">❤️ Emotion Detection</div>
+              <div class="feature-item">⚡ Fast Streaming</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="onboarding-nav">
+          <button class="btn-secondary" id="prevBtn" style="visibility: hidden">
+            ← Back
+          </button>
+          <div class="step-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <button class="btn-primary" id="nextBtn">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Main App Container ───────────────────────────── -->
+    <div class="app-container" id="appContainer" style="display: none">
+      <!-- ─── Left Sidebar ─────────────────────────── -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <div class="mini-logo-core">J</div>
+            <span class="logo-text">JARVIS</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-btn active" data-view="chat" id="navChat">
+            <span class="nav-icon">💬</span>
+            <span class="nav-label">Chat</span>
+          </button>
+          <button class="nav-btn" data-view="brain" id="navBrain">
+            <span class="nav-icon">🧠</span>
+            <span class="nav-label">Brain</span>
+          </button>
+          <button class="nav-btn" data-view="settings" id="navSettings">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Settings</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-pill" id="userPill">
+            <div class="user-avatar">A</div>
+            <span class="user-name" id="sidebarUserName">User</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ─── Main Chat View ───────────────────────── -->
+      <main class="main-content" id="chatView">
+        <!-- Chat Header -->
+        <header class="chat-header">
+          <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <div class="header-info">
+              <h2>JARVIS <span class="status-dot online"></span></h2>
+              <span class="header-status" id="headerStatus"
+                >Ready to assist</span
+              >
+            </div>
+          </div>
+          <div class="header-right">
+            <div class="emotion-badge" id="emotionBadge" style="display: none">
+              <span class="emotion-icon" id="emotionIcon">😊</span>
+              <span class="emotion-text" id="emotionText">neutral</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Chat Messages Area -->
+        <div class="chat-messages" id="chatMessages">
+          <div class="welcome-message" id="welcomeMessage">
+            <div class="welcome-logo">
+              <div class="welcome-ring-anim"></div>
+              <div class="welcome-core">J</div>
+            </div>
+            <h2>Hi! Main JARVIS hoon 👋</h2>
+            <p>
+              Tumhara personal AI assistant. Hinglish mein baat karo, kuch bhi
+              pucho — main yaad rakhunga!
+            </p>
+            <div class="welcome-chips">
+              <button class="chip" data-msg="Hi JARVIS, introduce yourself!">
+                👋 Say Hi
+              </button>
+              <button
+                class="chip"
+                data-msg="Mera naam yaad rakh, main Amrit hoon"
+              >
+                🧠 Remember my name
+              </button>
+              <button class="chip" data-msg="Kuch interesting batao">
+                💡 Tell me something cool
+              </button>
+              <button class="chip" data-msg="Aaj ka plan banao">
+                📋 Plan my day
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suggestion Chips -->
+        <div class="suggestion-area" id="suggestionArea" style="display: none">
+          <div class="suggestion-chips" id="suggestionChips"></div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-container">
+          <div class="input-wrapper">
+            <button
+              class="voice-btn"
+              id="voiceBtn"
+              title="Voice input (Web Speech API)"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+                />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <line x1="12" y1="19" x2="12" y2="23" />
+                <line x1="8" y1="23" x2="16" y2="23" />
+              </svg>
+            </button>
+            <textarea
+              id="chatInput"
+              class="chat-input"
+              placeholder="JARVIS se baat karo..."
+              rows="1"
+              autocomplete="off"
+            ></textarea>
+            <button class="send-btn" id="sendBtn" disabled>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </button>
+          </div>
+          <p class="input-hint">
+            JARVIS AI • Hinglish • <span id="inputCharCount">0</span> chars
+          </p>
+        </div>
+      </main>
+
+      <!-- ─── Brain (Memory Dashboard) View ────────── -->
+      <div class="brain-view" id="brainView" style="display: none">
+        <header class="chat-header">
+          <div class="header-left">
+            <button class="menu-toggle" id="brainMenuToggle">☰</button>
+            <div class="header-info">
+              <h2>🧠 The Brain</h2>
+              <span class="header-status">Your digital memory dashboard</span>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="btn-small" id="addMemoryBtn">+ Add Memory</button>
+          </div>
+        </header>
+
+        <div class="brain-content">
+          <!-- Memory Tabs -->
+          <div class="memory-tabs">
+            <button class="tab-btn active" data-type="">All</button>
+            <button class="tab-btn" data-type="semantic">💡 Semantic</button>
+            <button class="tab-btn" data-type="episodic">📝 Episodic</button>
+            <button class="tab-btn" data-type="procedural">
+              ⚙️ Procedural
+            </button>
+          </div>
+
+          <!-- Memory Stats -->
+          <div class="memory-stats" id="memoryStats">
+            <div class="stat-card">
+              <span class="stat-number" id="totalMemories">0</span>
+              <span class="stat-label">Total Memories</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number" id="semanticCount">0</span>
+              <span class="stat-label">Facts Known</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number" id="episodicCount">0</span>
+              <span class="stat-label">Conversations</span>
+            </div>
+          </div>
+
+          <!-- Memory List -->
+          <div class="memory-list" id="memoryList">
+            <div class="memory-empty">
+              <p>
+                🧠 No memories yet. Start chatting with JARVIS to build your
+                digital brain!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Memory Modal -->
+        <div class="modal-overlay" id="addMemoryModal" style="display: none">
+          <div class="modal-card">
+            <h3>Add Memory</h3>
+            <textarea
+              id="newMemoryContent"
+              class="jarvis-input"
+              placeholder="Enter a fact about yourself..."
+              rows="3"
+            ></textarea>
+            <input
+              id="newMemoryTags"
+              class="jarvis-input"
+              placeholder="Tags (comma separated)"
+            />
+            <div class="modal-actions">
+              <button class="btn-secondary" id="cancelAddMemory">Cancel</button>
+              <button class="btn-primary" id="confirmAddMemory">
+                Save Memory
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Settings View ────────────────────────── -->
+      <div class="settings-view" id="settingsView" style="display: none">
+        <header class="chat-header">
+          <div class="header-left">
+            <button class="menu-toggle" id="settingsMenuToggle">☰</button>
+            <div class="header-info">
+              <h2>⚙️ Settings</h2>
+              <span class="header-status">Personalize your JARVIS</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="settings-content">
+          <div class="settings-section">
+            <h3>Profile</h3>
+            <div class="setting-item">
+              <label>Your Name</label>
+              <input
+                type="text"
+                id="settingsName"
+                class="jarvis-input"
+                placeholder="Your name"
+              />
+            </div>
+            <button class="btn-primary" id="saveSettings">Save Changes</button>
+          </div>
+
+          <div class="settings-section">
+            <h3>Privacy & Data</h3>
+            <div class="setting-item">
+              <label>Memory Storage</label>
+              <p class="setting-desc">
+                All memories are stored locally in SQLite. No data sent to cloud
+                storage.
+              </p>
+            </div>
+            <button class="btn-danger" id="clearAllMemories">
+              🗑️ Clear All Memories
+            </button>
+          </div>
+
+          <div class="settings-section">
+            <h3>About JARVIS AI</h3>
+            <p class="setting-desc">
+              Version 1.0.0 MVP • Built with FastAPI + NVIDIA AI • Hinglish NLP
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
